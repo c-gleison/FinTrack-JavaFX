@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="@../css/style.css" fx:controller="com.cg.fintrackgui.controller.MainWindowController">
+    <padding>
+        <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
+    </padding>
+
+    <top>
+        <VBox alignment="CENTER" spacing="0.0">
+            <padding>
+                <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
+            </padding>
+            <children>
+                <Label text= "FinTrack - Gerenciador financeiro" styleClass="app-title"/>
+                <Separator/>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+                    </padding>
+                    
+                    <children>
+                        <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
+                        <Button text="Editar" styleClass="df-button"/>
+                        <Button text="Remover" styleClass="df-button"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>     
+    </top>
+     
+    <center>   
+        <TableView>
+            <BorderPane.margin>
+                <Insets top="5.0" right="3.0" bottom="3.0" left="3.0"/>
+            </BorderPane.margin>
+
+            <columns>
+                <TableColumn fx:id="colDescription" text="ID" prefWidth="40.0"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <left>
+    </left>
+
+    <right>
+    </right>
+
+    <bottom>
+    </bottom>
+
+
+</BorderPane>
+

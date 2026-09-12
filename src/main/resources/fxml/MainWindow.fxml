@@ -1,64 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>  
+
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Button?>
-
-<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="@../css/style.css" fx:controller="com.cg.fintrackgui.controller.MainWindowController">
-    <padding>
-        <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-    </padding>
-
-    <top>
-        <VBox alignment="CENTER" spacing="0.0">
-            <padding>
-                <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            </padding>
-            <children>
-                <Label text= "FinTrack - Gerenciador financeiro" styleClass="app-title"/>
-                <Separator/>
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
-                    </padding>
-                    
-                    <children>
-                        <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
-                        <Button text="Editar" styleClass="df-button"/>
-                        <Button text="Remover" styleClass="df-button"/>
-                    </children>
-                </HBox>
-            </children>
-        </VBox>     
-    </top>
-     
-    <center>   
-        <TableView>
-            <BorderPane.margin>
-                <Insets top="5.0" right="3.0" bottom="3.0" left="3.0"/>
-            </BorderPane.margin>
-
-            <columns>
-                <TableColumn fx:id="colDescription" text="ID" prefWidth="40.0"/>
-            </columns>
-        </TableView>
-    </center>
-
-    <left>
-    </left>
-
-    <right>
-    </right>
-
-    <bottom>
-    </bottom>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 
 
-</BorderPane>
+<StackPane xmlns:fx="http://javafx.com/fxml" stylesheets="@../css/style.css" fx:controller="com.cg.fintrackgui.controller.MainWindowController">
+    <BorderPane fx:id="mainBorderPane">
+        <padding>
+            <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
+        </padding>
 
+        <top>
+            <VBox alignment="CENTER" spacing="0.0">
+                <padding>
+                    <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
+                </padding>
+                <children>
+
+                    <MenuBar>
+                        <menus>
+                            <Menu text="File">
+                                <items>
+                                    <MenuItem text="Open"/>
+                                </items>
+                                <items>
+                                    <MenuItem text="Exit"/>
+                                </items>
+                            </Menu>
+                        </menus>
+                        <menus>
+                            <Menu text="Help">
+                                <items>
+                                    <MenuItem text="About"/>
+                                </items>
+                            </Menu>
+                        </menus>
+                    </MenuBar>
+
+                    <HBox alignment="CENTER_LEFT" spacing="3">
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0"/>
+                        </padding>
+                        
+                        <children>
+                            <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
+                            <Button text="Editar" styleClass="df-button"/>
+                            <Button text="Remover" styleClass="df-button"/>
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>     
+        </top>
+        
+        <center>   
+            <TableView fx:id="transactionTable" styleClass="table-view">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+
+                <BorderPane.margin>
+                    <Insets top="0.0" right="5.0" bottom="5.0" left="5.0"/>
+                </BorderPane.margin>
+
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" minWidth="20" maxWidth="20" resizable="false" styleClass="centered-column" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="colName" text="Nome" minWidth="60" maxWidth="60" styleClass="centered-column" reorderable="false"/>
+                    <TableColumn fx:id="colValue" text="Valor" minWidth="60" maxWidth="60" styleClass="centered-column" reorderable="false"/>
+                    <TableColumn fx:id="colType" text="Tipo" minWidth="60" maxWidth="60" resizable="false" styleClass="centered-column" reorderable="false"/>
+                    <TableColumn fx:id="colDescription" text="Descrição" minWidth="60" reorderable="false" sortable="false"/>
+                </columns>
+
+            </TableView>
+        </center>
+
+    </BorderPane>
+
+    <StackPane fx:id="overlayPane" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.35);" />
+
+</StackPane>

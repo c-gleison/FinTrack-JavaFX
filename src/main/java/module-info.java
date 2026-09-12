@@ -7,8 +7,10 @@ module com.cg.fintrackgui {
 
     opens com.cg.fintrackgui.controller to javafx.fxml;
     opens com.cg.fintrackgui.model to javafx.graphics, javafx.fxml;
+    opens com.cg.fintrackgui.util to javafx.graphics, javafx.fxml;
 
     exports com.cg.fintrackgui.model;
     exports com.cg.fintrackgui.controller;
     exports com.cg.fintrackgui.dao;
+    exports com.cg.fintrackgui.util;
 }

@@ -11,4 +11,29 @@
 .app-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-font-smoothing-type: lcd;
 }
+
+.popup-container {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 5px; 
+    -fx-background-insets: 5px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10px, 0.0, 0px, 0px);
+}
+
+.combo-box .list-cell {
+    -fx-alignment: center;
+}
+
+.table-view {
+
+
+}
+
+.centered-column {
+    -fx-alignment: CENTER;
+    -fx-font-smoothing-type: lcd;
+
+}
+

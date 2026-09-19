@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import com.cg.fintrackgui.dao.TransactionDAO;
 import com.cg.fintrackgui.model.Transaction;
 import com.cg.fintrackgui.util.AnimationsUtils;
+import com.cg.fintrackgui.util.ValidationUtils;
 
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -19,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.CacheHint;
 import javafx.scene.Parent;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,7 +45,6 @@ public class MainWindowController implements  Initializable{
 
     // Instancias
     private final TransactionDAO transactionDAO = new TransactionDAO();
-
 
     @Override 
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,13 +86,48 @@ public class MainWindowController implements  Initializable{
         }
     }
 
+    @FXML
+    private void removeTransaction(){
+
+        Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
+
+        try{
+            if (selectedTransaction != null) {
+
+                int transactionId = selectedTransaction.getId();   
+                transactionDAO.remove(transactionId);   
+            }
+
+            loadTransactions();
+
+        } catch ( NullPointerException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Vincula cada coluna ao getter do Model
     private void setupTableColumns() {
         
         colId.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getId()));
+
         colName.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getName()));
+        
         colValue.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getValue()));
+        colValue.setCellFactory(column -> new TableCell<Transaction, BigDecimal>() {
+            @Override
+            protected void updateItem(BigDecimal value, boolean empty) {
+                super.updateItem(value, empty);
+
+                if (empty || value == null) {
+                    setText(null);    
+                } else {
+                    setText(ValidationUtils.formatCurrency(value));
+                }
+            }   
+        });
+
         colType.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getType()));
+        
         colDescription.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDescription()));
 
         // Associa a lista observável à TableView

@@ -22,14 +22,11 @@
         <padding>
             <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
         </padding>
-
         <top>
             <VBox alignment="CENTER" spacing="0.0">
                 <padding>
                     <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
                 </padding>
-                <children>
-
                     <MenuBar>
                         <menus>
                             <Menu text="File">
@@ -49,42 +46,40 @@
                             </Menu>
                         </menus>
                     </MenuBar>
-
-                    <HBox alignment="CENTER_LEFT" spacing="3">
-                        <padding>
-                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0"/>
-                        </padding>
-                        
-                        <children>
-                            <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
-                            <Button text="Editar" styleClass="df-button"/>
-                            <Button text="Remover" styleClass="df-button"/>
-                        </children>
-                    </HBox>
-                </children>
             </VBox>     
         </top>
         
         <center>   
-            <TableView fx:id="transactionTable" styleClass="table-view">
+            <TableView fx:id="transactionTable" styleClass="table-view" focusTraversable="false">
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
 
                 <BorderPane.margin>
-                    <Insets top="0.0" right="5.0" bottom="5.0" left="5.0"/>
+                    <Insets top="5.0" right="5.0" left="5.0" bottom="5.0" />
                 </BorderPane.margin>
 
                 <columns>
                     <TableColumn fx:id="colId" text="ID" minWidth="20" maxWidth="20" resizable="false" styleClass="centered-column" sortable="false" reorderable="false"/>
                     <TableColumn fx:id="colName" text="Nome" minWidth="60" maxWidth="60" styleClass="centered-column" reorderable="false"/>
-                    <TableColumn fx:id="colValue" text="Valor" minWidth="60" maxWidth="60" styleClass="centered-column" reorderable="false"/>
+                    <TableColumn fx:id="colValue" text="Valor" minWidth="60" maxWidth="100" resizable="true" styleClass="centered-column" reorderable="false"/>
                     <TableColumn fx:id="colType" text="Tipo" minWidth="60" maxWidth="60" resizable="false" styleClass="centered-column" reorderable="false"/>
                     <TableColumn fx:id="colDescription" text="Descrição" minWidth="60" reorderable="false" sortable="false"/>
                 </columns>
 
             </TableView>
         </center>
+        <bottom>
+            <HBox alignment="CENTER_LEFT" spacing="3">
+                <padding>
+                    <Insets bottom="15.0" left="5.0" right="5.0" top="10.0"/>
+                </padding> 
+                        
+                <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
+                <Button text="Editar" styleClass="df-button"/>
+                <Button text="Remover" styleClass="df-button" onAction="#removeTransaction"/>
+            </HBox>
+        </bottom>
 
     </BorderPane>
 

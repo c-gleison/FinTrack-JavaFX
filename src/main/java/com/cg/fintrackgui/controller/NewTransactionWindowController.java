@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import com.cg.fintrackgui.dao.TransactionDAO;
 import com.cg.fintrackgui.model.Transaction;
 import com.cg.fintrackgui.util.AnimationsUtils;
+import com.cg.fintrackgui.util.ValidationUtils;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,6 +45,9 @@ public class NewTransactionWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         initializeMonths();
+
+        // Aplica o filtro de formatação
+        txtValue.setTextFormatter(ValidationUtils.currencyFormatter());
     }
 
     // Ação acionada pelo botão Salvar
@@ -53,8 +57,12 @@ public class NewTransactionWindowController implements Initializable {
 
             // Obtém e converte os dados dos componentes
             String description = txtDescription.getText();
+
             String name = txtName.getText();
-            BigDecimal value = new BigDecimal(txtValue.getText());
+
+            String digits = txtValue.getText().replaceAll("\\D", "");
+            BigDecimal value = digits.isEmpty() ? BigDecimal.ZERO : new BigDecimal(digits).divide(new BigDecimal("100"));
+
             String type = rbYes.isSelected() ? "RECEITA" : "DESPESA";
 
             // Instancía a transação e grava no banco SQLite

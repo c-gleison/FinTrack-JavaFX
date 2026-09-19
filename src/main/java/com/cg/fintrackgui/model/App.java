@@ -19,10 +19,13 @@ public class App extends Application {
 
         stage.setTitle("FinTrack - Gerenciador financeiro");
         stage.setScene(scene);
+        //stage.setMaximized(true);
+
         stage.setMinWidth(520);
         stage.setMinHeight(430);
         //stage.initStyle(StageStyle.TRANSPARENT);
 
-        stage.show();
+        stage.show();    
+
     }
 }

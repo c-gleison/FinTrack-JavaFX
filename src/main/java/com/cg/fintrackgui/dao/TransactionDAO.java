@@ -104,6 +104,7 @@ public class TransactionDAO implements IGenericDAO<Transaction> {
             stmt.setString(3, transaction.getType());
             stmt.setString(4, transaction.getDate() != null ? transaction.getDate().toString() : null);
             stmt.setString(5, transaction.getDescription());
+            stmt.setInt(6, transaction.getId());
             
             stmt.executeUpdate();
         }

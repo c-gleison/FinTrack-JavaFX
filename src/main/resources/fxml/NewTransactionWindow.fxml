@@ -36,7 +36,7 @@ styleClass="popup-container" alignment="CENTER"
 
     </fx:define>
 
-    <Label text="Adicionar nova transação" styleClass="app-title" alignment="CENTER"/>
+    <Label fx:id="lbTitle" text="Adicionar nova transação" styleClass="app-title" alignment="CENTER"/>
     
     <Separator prefHeight="10"/>
     

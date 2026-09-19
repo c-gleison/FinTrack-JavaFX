@@ -76,7 +76,7 @@
                 </padding> 
                         
                 <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
-                <Button text="Editar" styleClass="df-button"/>
+                <Button text="Editar" styleClass="df-button" onAction="#updateTransaction"/>
                 <Button text="Remover" styleClass="df-button" onAction="#removeTransaction"/>
             </HBox>
         </bottom>

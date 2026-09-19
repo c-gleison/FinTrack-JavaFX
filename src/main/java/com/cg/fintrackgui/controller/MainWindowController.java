@@ -45,62 +45,59 @@ public class MainWindowController implements  Initializable{
 
     // Instancias
     private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final NewTransactionWindowController newTransactionWindowController = new NewTransactionWindowController();
 
+    
     @Override 
     public void initialize(URL url, ResourceBundle rb) {
+
         setupTableColumns();
         loadTransactions();
+
     }
      @FXML
     private void addTransaction(ActionEvent event) {
-        
-        try {
-            // Carrega o arquivo FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewTransactionWindow.fxml"));
-            Parent root = loader.load(); 
 
-            // Estabelece a comunicação entre os controladores (Injeção de Dependência)
-            NewTransactionWindowController childController = loader.getController();
-            childController.setMainWindowController(this);
-            
-            // Aplica um efeito de desfoque na janela principal
-            mainBorderPane.setEffect(new GaussianBlur(15));
-            mainBorderPane.setCache(true);
-            mainBorderPane.setCacheHint(CacheHint.SPEED);
-             
-            // Ativa o cache de renderização
-            overlayPane.setCache(true);
-            overlayPane.setCacheHint(CacheHint.SPEED);
+        // Limpa qualquer seleção anterior da tabela
+        transactionTable.getSelectionModel().clearSelection();
+        transactionWindow();
 
-            // Insere a tela de overlay no StackPane e ativa sua exibição
-            overlayPane.getChildren().setAll(root);
-            overlayPane.setVisible(true);
-            // Define a opacidade inicial do overlay antes da animação
-            overlayPane.setOpacity(0.0);
-
-            // Roda a animação de abertura
-            Platform.runLater(() -> AnimationsUtils.popupOpenAnimation(overlayPane, root));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
     private void removeTransaction(){
 
-        Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
-
+        Transaction t = getSelectedTransaction();
+       
         try{
-            if (selectedTransaction != null) {
+            if (t != null) {
 
-                int transactionId = selectedTransaction.getId();   
+                int transactionId = t.getId();   
                 transactionDAO.remove(transactionId);   
             }
 
             loadTransactions();
 
         } catch ( NullPointerException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML 
+    private void updateTransaction(ActionEvent event){
+
+        Transaction t = getSelectedTransaction();
+
+        try {
+
+            if (t != null) {
+
+                transactionWindow(); 
+                
+
+            }
+   
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -136,12 +133,59 @@ public class MainWindowController implements  Initializable{
 
     // Lê todas as linhas do banco via DAO e popula a lista da tabela
     public void loadTransactions() {
+
         try {
+
             transactionList.setAll(transactionDAO.findAll());
+
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
     }
-    
+
+    public Transaction getSelectedTransaction(){
+
+        return transactionTable.getSelectionModel().getSelectedItem();
+        
+    }
+
+    public void transactionWindow(){
+
+        try {
+            
+            // Carrega o arquivo FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewTransactionWindow.fxml"));
+            Parent root = loader.load(); 
+
+            // Estabelece a comunicação entre os controladores (Injeção de Dependência)
+            NewTransactionWindowController childController = loader.getController();
+            childController.setMainWindowController(this);
+
+            childController.setFormData(getSelectedTransaction());
+            
+            // Aplica um efeito de desfoque na janela principal
+            mainBorderPane.setEffect(new GaussianBlur(15));
+            mainBorderPane.setCache(true);
+            mainBorderPane.setCacheHint(CacheHint.SPEED);
+             
+            // Ativa o cache de renderização
+            overlayPane.setCache(true);
+            overlayPane.setCacheHint(CacheHint.SPEED);
+
+            // Insere a tela de overlay no StackPane e ativa sua exibição
+            overlayPane.getChildren().setAll(root);
+            overlayPane.setVisible(true);
+            // Define a opacidade inicial do overlay antes da animação
+            overlayPane.setOpacity(0.0);
+
+            // Roda a animação de abertura
+            Platform.runLater(() -> AnimationsUtils.popupOpenAnimation(overlayPane, root));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }    
 }
 

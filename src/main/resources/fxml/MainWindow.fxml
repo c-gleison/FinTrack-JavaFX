@@ -6,6 +6,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>  
+<?import javafx.scene.layout.Region?>
+
+<?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -18,7 +21,7 @@
 
 
 <StackPane xmlns:fx="http://javafx.com/fxml" stylesheets="@../css/style.css" fx:controller="com.cg.fintrackgui.controller.MainWindowController">
-    <BorderPane fx:id="mainBorderPane">
+    <BorderPane fx:id="mainBorderPane" styleClass="default-background">
         <padding>
             <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
         </padding>
@@ -27,62 +30,85 @@
                 <padding>
                     <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
                 </padding>
-                    <MenuBar>
-                        <menus>
-                            <Menu text="File">
-                                <items>
-                                    <MenuItem text="Open"/>
-                                </items>
-                                <items>
-                                    <MenuItem text="Exit"/>
-                                </items>
-                            </Menu>
-                        </menus>
-                        <menus>
-                            <Menu text="Help">
-                                <items>
-                                    <MenuItem text="About"/>
-                                </items>
-                            </Menu>
-                        </menus>
-                    </MenuBar>
-            </VBox>     
+
+                <MenuBar visible="false" managed="false"> 
+                    <menus>
+                        <Menu text="File">
+                            <items>
+                                <MenuItem text="Open"/>
+                            </items>
+                            <items>
+                                <MenuItem text="Exit"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                    <menus>
+                        <Menu text="Help">
+                            <items>
+                                <MenuItem text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar> 
+            </VBox>
+   
         </top>
-        
-        <center>   
-            <TableView fx:id="transactionTable" styleClass="table-view" focusTraversable="false">
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                </columnResizePolicy>
-
-                <BorderPane.margin>
+        <left>
+            <VBox styleClass="ctn-sidebar" minWidth="40" maxWidth="40">
+            </VBox>
+        </left>
+        <center>
+            <VBox spacing="1.0">
+                <padding>
                     <Insets top="5.0" right="5.0" left="5.0" bottom="5.0" />
-                </BorderPane.margin>
+                </padding>
 
-                <columns>
-                    <TableColumn fx:id="colId" text="ID" minWidth="20" maxWidth="20" resizable="false" styleClass="centered-column" sortable="false" reorderable="false"/>
-                    <TableColumn fx:id="colName" text="Nome" minWidth="60" maxWidth="60" styleClass="centered-column" reorderable="false"/>
-                    <TableColumn fx:id="colValue" text="Valor" minWidth="60" maxWidth="100" resizable="true" styleClass="centered-column" reorderable="false"/>
-                    <TableColumn fx:id="colType" text="Tipo" minWidth="60" maxWidth="60" resizable="false" styleClass="centered-column" reorderable="false"/>
-                    <TableColumn fx:id="colDescription" text="Descrição" minWidth="60" reorderable="false" sortable="false"/>
-                </columns>
+                <HBox alignment="CENTER_LEFT" spacing="20" maxHeight="60">
+                    <VBox.margin>
+                        <Insets bottom="20.0"/>
+                    </VBox.margin>
+   
+                    <HBox alignment="CENTER_LEFT" spacing="10" minWidth="150" styleClass="default-container, ctn-bg-blue-00" >
+                        <StackPane alignment="CENTER" styleClass="default-container, ctn-bg-blue-01" maxHeight="30" maxWidth="30">
+                            <Text text="&#xf555;" styleClass="icon-fa, icon-sz-big, text-blue-03"/>   
+                        </StackPane>
 
-            </TableView>
+                        <VBox alignment="CENTER_LEFT">
+                            <Label text="Saldo Total" styleClass="default-text, txt-blue-0"/>
+                            <Label fx:id="txtBalance" text="R$ 0" styleClass="default-text, txt-sz-big, txt-bold,"/>
+                        </VBox>
+                    </HBox>
+                </HBox> 
+
+                <HBox styleClass="" minHeight="35" maxHeight="35" alignment="CENTER_LEFT" spacing="3">      
+                    <Button text="Nova Transação" minWidth="130" styleClass="default-button, btn-blue" onAction="#addTransaction"> <graphic> <Text text="&#xf067;" styleClass="icon-fa, txt-white" /> </graphic> </Button>
+                    <Region  HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnUpd" text="" maxWidth="20" styleClass="default-button, btn-green" onAction="#updateTransaction"> <graphic> <Text text="&#xf040;" styleClass="icon-fa, txt-white"/> </graphic> </Button>
+                    <Button fx:id="btnRm" text="" maxWidth="20" styleClass="default-button, btn-red" onAction="#removeTransaction"> <graphic> <Text text="&#xf014;" styleClass="icon-fa, txt-white" /> </graphic> </Button>
+                </HBox>  
+
+                <TableView fx:id="transactionTable" VBox.vgrow="ALWAYS" styleClass="table-view" focusTraversable="false">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" minWidth="40" maxWidth="40" resizable="false" styleClass="" sortable="false" reorderable="false" />
+                        <TableColumn fx:id="colName" text="Nome" minWidth="60" maxWidth="60" styleClass="" reorderable="false"/>
+                        <TableColumn fx:id="colValue" text="Valor" minWidth="60" maxWidth="100" resizable="true" styleClass="" reorderable="false"/>
+                        <TableColumn fx:id="colType" text="Tipo" minWidth="60" maxWidth="60" resizable="false" styleClass="centered-column" reorderable="false"/>
+                        <TableColumn fx:id="colDate" text="Data" minWidth="80" maxWidth="80" resizable="false" styleClass="centered-column" reorderable="true"/>
+                        <TableColumn fx:id="colMonth" text="Recorrência" minWidth="80" maxWidth="80" resizable="false" styleClass="centered-column" reorderable="true"/>
+                        <TableColumn fx:id="colDescription" text="Descrição" minWidth="60" reorderable="false" sortable="false"/>
+                    </columns>                       
+                </TableView>
+            </VBox>
         </center>
         <bottom>
-            <HBox alignment="CENTER_LEFT" spacing="3">
-                <padding>
-                    <Insets bottom="15.0" left="5.0" right="5.0" top="10.0"/>
-                </padding> 
-                        
-                <Button text="Adicionar" styleClass="df-button" onAction="#addTransaction"/>
-                <Button text="Editar" styleClass="df-button" onAction="#updateTransaction"/>
-                <Button text="Remover" styleClass="df-button" onAction="#removeTransaction"/>
-            </HBox>
         </bottom>
 
     </BorderPane>
 
-    <StackPane fx:id="overlayPane" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.35);" />
+    <StackPane fx:id="overlayPane" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.2);" />
 
 </StackPane>

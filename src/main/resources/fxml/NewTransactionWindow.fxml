@@ -20,87 +20,118 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 
 
-<VBox fx:id="rootBox" prefWidth="480.0" prefHeight="360.0" maxWidth="-Infinity" maxHeight="-Infinity" stylesheets="@../css/style.css" 
+<StackPane fx:id="formWindow" prefWidth="480" prefHeight="360" maxWidth="-Infinity" maxHeight="-Infinity" stylesheets="@../css/style.css" 
 xmlns:fx="http://javafx.com/fxml" fx:controller="com.cg.fintrackgui.controller.NewTransactionWindowController"
-styleClass="popup-container" alignment="CENTER"
->
-    <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-    </padding>
-
-    <fx:define>
-        <ToggleGroup fx:id="recurrenceToggleGroup"/>
-        <ToggleGroup fx:id="revenueToggleGroup"/>
-
-    </fx:define>
-
-    <Label fx:id="lbTitle" text="Adicionar nova transação" styleClass="app-title" alignment="CENTER"/>
-    
-    <Separator prefHeight="10"/>
-    
-    <HBox alignment="CENTER_LEFT" spacing="5">
+styleClass="popup-container" alignment="CENTER">
+    <VBox fx:id="formMainVbox">
         <padding>
-                <Insets bottom="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
         </padding>
 
-        <Label text="Nome:"/>
-        <TextField fx:id="txtName" promptText="Dê um nome a transação" maxWidth="220"/>
+        <fx:define>
+            <ToggleGroup fx:id="recurrenceToggleGroup"/>
+            <ToggleGroup fx:id="revenueToggleGroup"/>
+        </fx:define>
 
-        <Region HBox.hgrow="ALWAYS"/>
+        <HBox spacing="15" alignment="CENTER">
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
 
-        <HBox spacing="3" alignment="CENTER_LEFT"> 
-            <Label text="Tipo:"/>
+            <HBox alignment="CENTER">
+                <Label fx:id="lbTitle" text="Adicionar nova transação" styleClass="txt-title" alignment="CENTER"/>
+            </HBox>
 
-            <RadioButton prefWidth="70" fx:id="rb1Yes" text="Receita" toggleGroup="$revenueToggleGroup" selected="true"/>
-            <RadioButton prefWidth="70" fx:id="rb1No" text="Despesa" toggleGroup="$revenueToggleGroup"/>           
-        </HBox> 
-    </HBox>
+            <HBox fx:id="hBoxID" alignment="CENTER" styleClass="default-container, ctn-bg-blue-00" visible="false" managed="false">
+                <Label text="ID: #" styleClass="txt-sz-big, txt-blue-01" />
+                <Label fx:id= "txtID" text="" styleClass="txt-bold, txt-sz-big, text-blue-02"/>
+            </HBox>
+        </HBox>
 
-      <Separator prefHeight="10"/>
+        <Separator prefHeight="10" minHeight="10"/>
 
-    <VBox spacing="5">
-        <Label text="Descrição da transação:"/>
-        <TextArea fx:id="txtDescription" promptText="Digite os detalhes aqui..." prefRowCount="4" wrapText="true"/>
-    </VBox>
+        <VBox alignment="CENTER_LEFT" spacing="5">
+            <padding>
+                    <Insets bottom="10.0" top="5.0"/>
+            </padding>
+            <VBox spacing="0">
+                <Label text="Nome:*" styleClass="default-text" />
+                <TextField fx:id="txtName" promptText="Dê um nome a transação" />
+            </VBox>
+        </VBox>
 
-    <Separator prefHeight="10"/>
+        <VBox spacing="0">
+            <padding>
+                <Insets bottom="10"/>
+            </padding>
 
-    <HBox spacing="5">  
-        <VBox spacing="5">
+            <Label text="Descrição:" styleClass="default-text"/>
+            <TextArea fx:id="txtDescription" minHeight="40" promptText="Informe os detalhes aqui..." prefRowCount="2" wrapText="true"/>
+        </VBox>
 
-            <HBox spacing="5" alignment="CENTER">
-                <VBox minWidth="80">  
-                    <Label text="Recorrência:"/>
-                    <RadioButton prefWidth="70" fx:id="rbYes" text="Sim" toggleGroup="$recurrenceToggleGroup" selected="true"/>
-                    <RadioButton prefWidth="70" fx:id="rbNo" text="Não" toggleGroup="$recurrenceToggleGroup"/>
-                </VBox>     
+        <VBox spacing="0">
+            <Label text="Tipo:*" styleClass="default-text"/>
 
-                <VBox fx:id="vBoxCB" spacing="7" minWidth="80">
-                    <Label text="Mês de referência"/>
-                    <ComboBox fx:id="choiceMonths" promptText="Selecione" prefWidth="100" styleClass="combo-box"/>
-                </VBox>
+            <HBox spacing="5" alignment="CENTER_LEFT"> 
+                <padding>
+                    <Insets bottom="10"/>
+                </padding>
+
+                <RadioButton prefWidth="70" fx:id="rbRevenue" text="Receita" toggleGroup="$revenueToggleGroup" selected="true"/>
+                <RadioButton prefWidth="70" fx:id="rbExpense" text="Despesa" toggleGroup="$revenueToggleGroup"/>           
+            </HBox> 
+        </VBox>
+        
+        <HBox spacing="5">  
+            <padding>
+                <Insets bottom="10.0"/>
+            </padding>
+
+            <VBox spacing="5">
+                <HBox spacing="5" alignment="CENTER">
+                    <VBox minWidth="80">  
+                        <Label text="Recorrência:*" styleClass="default-text"/>
+                        <RadioButton prefWidth="70" fx:id="rbRecurrencyYes" text="Sim" toggleGroup="$recurrenceToggleGroup" selected="true"/>
+                        <RadioButton prefWidth="70" fx:id="rbRecurrencyNo" text="Não" toggleGroup="$recurrenceToggleGroup"/>
+                    </VBox>     
+
+                    <VBox fx:id="vBoxCB" spacing="7" minWidth="80">
+                        <Label text="Mês de referência*" styleClass="default-text"/>
+                        <ComboBox fx:id="cmbMonth" promptText="Selecione" prefWidth="100" styleClass="combo-box"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <VBox spacing="5" alignment="CENTER_LEFT">
+                <Label text="Valor:*" styleClass="default-text"/>
+                <TextField fx:id="txtValue" promptText="R$" maxWidth="80"/>
+            </VBox>
+        </HBox>
+        
+        <Separator prefHeight="10" minHeight="10"/>
+    
+        <Region VBox.vgrow="ALWAYS" minHeight="40"/>
+
+        <VBox alignment="CENTER" spacing="5">
+
+            <VBox minHeight="40" alignment="CENTER">
+                <Label text="Campos marcados com '*' são obrigatórios." styleClass="default-text" style="-fx-font-size: 11px"/>
+                <Label fx:id="lblErrorMessage" styleClass="txt-info" visible="false" />
+            </VBox>
+
+            <HBox alignment="CENTER" spacing="5"> 
+                <Button fx:id="btnSave" styleClass="default-button, btn-green" text="Salvar" onAction="#handleSave"/>
+                <Button styleClass="default-button, btn-red" text="Cancelar" onAction="#closeOverlay"/>
             </HBox>
         </VBox>
+    </VBox>
 
-        <Region HBox.hgrow="ALWAYS" />
+    <StackPane fx:id="WarningOverlayPane" visible="false" styleClass="overlay-container" style="-fx-background-color: rgba(128, 128, 128, 0.2); -fx-background-insets: -5px;"/>
 
-        <VBox spacing="5" alignment="CENTER_LEFT">
-            <Label text="Valor:"/>
-            <TextField fx:id="txtValue" promptText="R$" maxWidth="80"/>
-        </VBox>
-    </HBox>
-  
-
-    <Separator prefHeight="10"/>
-
-    <Region VBox.vgrow="ALWAYS" />
-
-    <HBox spacing="5" alignment="CENTER">
-        <Button styleClass="df-button" text="Salvar" onAction="#handleSave"/>
-        <Button styleClass="df-button" text="Cancelar" onAction="#closeOverlay"/>
-    </HBox>
-
-</VBox>
+</StackPane>
 

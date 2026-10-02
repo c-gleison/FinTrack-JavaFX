@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+
+<?import java.lang.String?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.collections.FXCollections?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
+    
+
+
+<VBox fx:id="warningRootPane" maxWidth="240" maxHeight="128" stylesheets="@../css/style.css" 
+xmlns:fx="http://javafx.com/fxml" fx:controller="com.cg.fintrackgui.controller.WarningWindowController"
+styleClass="popup-container" alignment="TOP_CENTER" spacing="10">
+
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+
+    <Label text="ATENÇÃO" styleClass="txt-title, txt-bold, icon-border"> <graphic> <Text text="&#xf071;" styleClass="icon-fa, icon-sz-big, icon-border, text-yellow-warning,"/> </graphic> </Label>    
+    <Label fx:id="lbWarningText" text="" styleClass="txt-info, txt-sz-medium"/>
+    
+    <Region VBox.vgrow="ALWAYS" />
+        
+    <HBox spacing="5" alignment="CENTER">
+        <Button fx:id="btnSave" text="Sim" styleClass="default-button, btn-green" onAction="#handleConfirm"/>
+        <Button fx:id="btnCancel" text="Cancelar" styleClass="default-button, btn-red" onAction="#handleCloseWarning"/>
+    </HBox>
+</VBox>
+

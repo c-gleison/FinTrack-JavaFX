@@ -6,16 +6,37 @@ import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import javafx.scene.CacheHint;
+import javafx.scene.effect.Effect;
 
+// Classe utilitária para gerenciamento de animações e efeitos visuais da interface
 public class AnimationsUtils {
-    
-    // Variaveis globais
-    private static final double ANIMATION_DURATION = 100;
 
+    // Constantes de configuração e chaves de propriedades para controle das animações
+    private static final double ANIMATION_DURATION = 100;
+    private static final String BACKDROP_KEY = "overlay.backdrop";
+    private static final String CLOSING_KEY = "overlay.closing";
+
+    // Construtor privado para evitar instanciação
     private AnimationsUtils() {}
 
-    public static void popupOpenAnimation(Node overlay, Node popupContent){
+    // Estrutura interna para armazenar o estado original do elemento de fundo
+    private record BackdropState(Node node, Effect effect, boolean cache, CacheHint cacheHint) {}
 
+    // Aplica efeito visual de fundo e salva o estado anterior para posterior restauração
+    public static void applyBackdropEffect(Node popupContent, Node backdrop, Effect effect) {
+        if (popupContent == null || backdrop == null) return;
+
+        popupContent.getProperties().put(BACKDROP_KEY,
+                new BackdropState(backdrop, backdrop.getEffect(), backdrop.isCache(), backdrop.getCacheHint()));
+
+        backdrop.setEffect(effect);
+        backdrop.setCache(true);
+        backdrop.setCacheHint(CacheHint.SPEED);
+    }
+    
+    // Executa a animação paralela de opacidade e escala para abertura de popups
+    public static void popupOpenAnimation(Node overlay, Node popupContent){
         Duration duration = Duration.millis(ANIMATION_DURATION);
 
         FadeTransition fade = new FadeTransition(duration, overlay);
@@ -29,12 +50,11 @@ public class AnimationsUtils {
         scale.setToY(1.0);
 
         ParallelTransition animacaoSaida = new ParallelTransition(fade, scale);
-
         animacaoSaida.play();
     }
 
+    // Executa a animação paralela de opacidade e escala para fechamento de popups
     public static void popupCloseAnimation(Node overlay, Node popupContent, Runnable onFinished){
-
         Duration duration = Duration.millis(ANIMATION_DURATION);
 
         FadeTransition fade = new FadeTransition(duration, overlay);
@@ -56,35 +76,37 @@ public class AnimationsUtils {
         animacaoSaida.play();
     }
 
+    // Coordena o fechamento animado do overlay e restaura as propriedades originais do fundo
     public static void closeOverlay(Node overlay, Node popupContent) {
+        if (popupContent == null || !(overlay instanceof Pane container)) return;
 
-        if (popupContent == null) return;
+        // Evita execuções duplicadas ao disparar o fechamento
+        if (popupContent.getProperties().putIfAbsent(CLOSING_KEY, Boolean.TRUE) != null) return;
 
-        AnimationsUtils.popupCloseAnimation(overlay, popupContent, () -> {
+        // Determina se deve animar o container completo ou apenas o popup
+        boolean lastPopup = container.getChildren().size() == 1;
+        Node fadeTarget = lastPopup ? container : popupContent;
 
-            if (popupContent.getScene() != null) {
-                Node mainPane = popupContent.getScene().lookup("#mainBorderPane");
-                if (mainPane != null) {
-                    mainPane.setEffect(null);
-                }
+        // Anima o fechamento e executa a limpeza e restauração ao finalizar
+        popupCloseAnimation(fadeTarget, popupContent, () -> {
+            container.getChildren().remove(popupContent);
+
+            if (popupContent.getProperties().remove(BACKDROP_KEY) instanceof BackdropState s) {
+                s.node().setEffect(s.effect());
+                s.node().setCache(s.cache());
+                s.node().setCacheHint(s.cacheHint());
             }
 
-            if (overlay instanceof Pane parentPane) {
-                parentPane.setVisible(false);
-                parentPane.getChildren().remove(popupContent);
-
-                // Desliga o cache de renderização
-                parentPane.setCache(false);
-
-                // Restaura a opacidade padrão do overlay para a próxima abertura
-                overlay.setOpacity(1.0);
+            if (container.getChildren().isEmpty()) {
+                container.setVisible(false);
+                container.setCache(false);
             }
 
-            // Restaura as escalas do conteúdo
+            container.setOpacity(1.0);
+            popupContent.setOpacity(1.0);
             popupContent.setScaleX(1.0);
             popupContent.setScaleY(1.0);
-            popupContent.setOpacity(1.0);
+            popupContent.getProperties().remove(CLOSING_KEY);
         });
     }
-     
 }

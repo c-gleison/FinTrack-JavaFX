@@ -4,37 +4,29 @@ import java.util.ResourceBundle;
 
 import com.cg.fintrackgui.dao.TransactionDAO;
 import com.cg.fintrackgui.model.Transaction;
+import com.cg.fintrackgui.service.TransactionService;
 import com.cg.fintrackgui.util.AnimationsUtils;
 import com.cg.fintrackgui.util.ValidationUtils;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.CacheHint;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ResourceBundle;
-import java.util.Locale;
-import javafx.application.Platform;
 
 // Controlador da janela modal de criação e edição de transações
 public class NewTransactionWindowController implements Initializable {
@@ -58,13 +50,16 @@ public class NewTransactionWindowController implements Initializable {
     @FXML private Label lblErrorMessage;
     @FXML private Button btnSave;
 
-    // Objeto para manipulação de dados no banco
-    private final TransactionDAO transactionDAO = new TransactionDAO();
+
     
     // Referência ao controlador da janela principal
     private MainWindowController mainWindowController;
+    private TransactionService service;
+
+    // Guarda a referência da janela principal e obtém dela o serviço compartilhado
     public void setMainWindowController(MainWindowController mainWindowController){
         this.mainWindowController = mainWindowController;
+        this.service = mainWindowController.getService();
     }
 
     // Estado inicial da transação e modo de operação
@@ -154,14 +149,14 @@ public class NewTransactionWindowController implements Initializable {
             Month recurrencyMonth = rbRecurrencyYes.isSelected() ? cmbMonth.getValue() : null;
             Transaction transaction = new Transaction(id, name, value, type, date, recurrencyMonth, description);
 
-            // Persiste no banco de dados conforme modo de criação ou edição
+            // Persiste via serviço conforme modo de criação ou edição
             if (isNewTransaction == true) {
-                transactionDAO.save(transaction);
+                service.add(transaction);
                 finishSave();
             } else {
                 ValidationUtils.showWarningOverlay(WarningOverlayPane, formMainVbox,"Salvar edição?", () -> {
                     try {
-                        transactionDAO.update(transaction);
+                        service.update(transaction);
                         finishSave();
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -233,7 +228,7 @@ public class NewTransactionWindowController implements Initializable {
 
     // Finaliza o fluxo salvando, atualizando a tela principal e fechando a janela
     private void finishSave() {
-        mainWindowController.loadTransactions();
+        mainWindowController.refreshTable();
         mainWindowController.updateTotalBalance();
         AnimationsUtils.closeOverlay(formWindow.getParent(), formWindow);
     }

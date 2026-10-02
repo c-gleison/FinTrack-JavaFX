@@ -5,12 +5,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cg.fintrackgui.dao.TransactionDAO;
 import com.cg.fintrackgui.model.Transaction;
+import com.cg.fintrackgui.service.TransactionService;
 import com.cg.fintrackgui.util.AnimationsUtils;
 import com.cg.fintrackgui.util.ValidationUtils;
 
@@ -29,7 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -55,8 +52,13 @@ public class MainWindowController implements Initializable {
     // Lista observável para armazenamento e renderização na tabela
     private final ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
 
-    // Objeto para manipulação de dados no banco
-    private final TransactionDAO transactionDAO = new TransactionDAO();
+    // Serviço que coordena o banco de dados e o cache em memória
+    private final TransactionService service = new TransactionService();
+
+    // Entrega o serviço via getter
+    public TransactionService getService() {
+        return service;
+    }
     
     // Inicializa a tela e carrega os dados essenciais
     @Override 
@@ -89,18 +91,17 @@ public class MainWindowController implements Initializable {
     @FXML
     private void removeTransaction(){
         Transaction t = getSelectedTransaction();
-       
         if (t != null) {
             String transactionId = t.getId();   
             ValidationUtils.showWarningOverlay(overlayPane, mainBorderPane, "Remover a transação?", () -> {
-                try {   
-                    transactionDAO.remove(transactionId);
-                    loadTransactions();
-                    updateTotalBalance();
-                } catch (NullPointerException | SQLException e) {
-                    e.printStackTrace();
-                }   
-            });              
+            try {
+                service.remove(transactionId);
+                refreshTable();
+                updateTotalBalance();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });            
         }
     }
 
@@ -155,10 +156,17 @@ public class MainWindowController implements Initializable {
         transactionTable.setItems(transactionList);
     }
 
-    // Busca todas as transações cadastradas no banco de dados
+    // Copia o cache do serviço para a lista da tabela, sem consultar o banco
+    public void refreshTable() {
+        transactionList.clear();      
+        service.copyTo(transactionList);
+    }
+
+    // Lê as transações do banco para o cache e atualiza a tabela
     public void loadTransactions() {
         try {
-            transactionList.setAll(transactionDAO.findAll());
+            service.reload();
+            refreshTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }

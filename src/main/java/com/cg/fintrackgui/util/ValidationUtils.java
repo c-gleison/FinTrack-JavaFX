@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.function.UnaryOperator;
 
 import com.cg.fintrackgui.controller.WarningWindowController;
-import com.cg.fintrackgui.dao.TransactionDAO;
+
 import com.cg.fintrackgui.model.Transaction;
 
 import javafx.application.Platform;
@@ -19,10 +19,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.Label;
 
 import java.security.SecureRandom;
-import java.sql.SQLException;
+
 
 // Classe utilitária para validações, formatações e exibição de diálogos
 public class ValidationUtils {
@@ -141,7 +140,7 @@ public class ValidationUtils {
     }
 
     // Calcula o saldo total somando receitas e subtraindo despesas
-    public static BigDecimal calculateTotalBalance(List<Transaction> transactions) {
+    public static BigDecimal calculateTotalBalance(List<? extends Transaction> transactions) {
         if (transactions == null || transactions.isEmpty()) {
             return BigDecimal.ZERO;
         }

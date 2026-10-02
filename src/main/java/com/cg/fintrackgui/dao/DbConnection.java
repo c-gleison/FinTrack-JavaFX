@@ -7,7 +7,12 @@ import java.sql.Statement;
 
 // Gestor de conexões com a base de dados SQLite
 public class DbConnection {
-    private static final String URL = "jdbc:sqlite:fintrack.db";
+    private static String URL = "jdbc:sqlite:fintrack.db";
+
+    // Metodo para permitir mudar a URL do banco de dados
+    public static void setUrl(String newUrl) {
+        URL = newUrl;
+    }
 
     // Estabelece a conexão com a base de dados e garante a existência das tabelas
     public static Connection getConnection() throws SQLException {

@@ -13,4 +13,6 @@ module com.cg.fintrackgui {
     exports com.cg.fintrackgui.controller;
     exports com.cg.fintrackgui.dao;
     exports com.cg.fintrackgui.util;
+    exports com.cg.fintrackgui.service;
+
 }

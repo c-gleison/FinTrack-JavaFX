@@ -38,7 +38,7 @@ styleClass="popup-container" alignment="TOP_CENTER" spacing="10">
     <Region VBox.vgrow="ALWAYS" />
         
     <HBox spacing="5" alignment="CENTER">
-        <Button fx:id="btnSave" text="Sim" styleClass="default-button, btn-green" onAction="#handleConfirm"/>
+        <Button text="Sim" styleClass="default-button, btn-green" onAction="#handleConfirm"/>
         <Button fx:id="btnCancel" text="Cancelar" styleClass="default-button, btn-red" onAction="#handleCloseWarning"/>
     </HBox>
 </VBox>

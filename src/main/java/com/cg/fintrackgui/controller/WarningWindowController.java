@@ -20,12 +20,6 @@ public class WarningWindowController {
     @FXML private StackPane warningOverlay;
     @FXML Button btnCancel;
 
-    // Referência ao controlador da janela de transações
-    private NewTransactionWindowController newTransactionWindowController;
-    public void setNewTransactionWindowController(NewTransactionWindowController newTransactionWindowController){
-        this.newTransactionWindowController = newTransactionWindowController;
-    }
-
     // Define a mensagem exibidada na caixa de aviso
     public void setWarningMessage(String message){
         lbWarningText.setText(message);

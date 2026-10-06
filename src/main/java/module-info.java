@@ -1,9 +1,10 @@
 module com.cg.fintrackgui {
-    requires javafx.controls;
-    requires javafx.graphics;
-    requires javafx.fxml;
-    requires org.controlsfx.controls;
-    requires java.sql;
+    
+    requires transitive javafx.controls;
+    requires transitive javafx.graphics;
+    requires transitive javafx.fxml;
+    requires transitive org.controlsfx.controls;
+    requires transitive java.sql;
 
     opens com.cg.fintrackgui.controller to javafx.fxml;
     opens com.cg.fintrackgui.model to javafx.graphics, javafx.fxml;

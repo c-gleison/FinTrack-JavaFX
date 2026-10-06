@@ -27,7 +27,7 @@ import java.security.SecureRandom;
 public class ValidationUtils {
 
     // Configurações regionais e constantes para geração de ID
-    private static final Locale LOCALE_BR = new Locale("pt", "BR");
+    private static final Locale LOCALE_BR = Locale.of("pt", "BR");
     private static final String ALPHA_NUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int ID_LENGTH = 4;
     private static final SecureRandom RANDOM = new SecureRandom();

@@ -2,7 +2,6 @@ package com.cg.fintrackgui.controller;
 
 import java.util.ResourceBundle;
 
-import com.cg.fintrackgui.dao.TransactionDAO;
 import com.cg.fintrackgui.model.Transaction;
 import com.cg.fintrackgui.service.TransactionService;
 import com.cg.fintrackgui.util.AnimationsUtils;
@@ -15,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -32,6 +32,10 @@ import java.time.format.TextStyle;
 public class NewTransactionWindowController implements Initializable {
 
     // Componentes da interface injetados pelo FXML
+    @FXML
+    private ToggleGroup recurrenceToggleGroup;
+    @FXML
+    private ToggleGroup revenueToggleGroup;
     @FXML private ComboBox<Month> cmbMonth;
     @FXML private VBox vBoxCB;
     @FXML private HBox hBoxID;

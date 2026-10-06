@@ -25,7 +25,7 @@ public class DbConnection {
     private static void createTableIfNotExists(Connection connection) {
         String sql = """
                 CREATE TABLE IF NOT EXISTS transactions (
-                    id TEXT,
+                    id TEXT PRIMARY KEY,
                     name TEXT,
                     value DECIMAL(10,2),
                     type TEXT,
